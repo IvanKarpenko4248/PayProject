@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script
+        src="https://js.stripe.com/v3/">
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{ item.name }} <br>
+{{ item.description }} <br>
+{{ item.price }} <hr>
+
+<button onclick="ClickFunction()"> Купить </button>
+
+<script>
+
+const stripe = Stripe('pk_test_51L0hjqAdIZ4oyiKi9ULhUyVA2kAxfm61IXCK3j1IJV4WW34oY8Hb2RwW95v79JzUXuNpkHHTLoM40lsM93EQh11E00IDhbbUQ8');
+async function ClickFunction(){
+const result = await fetch('http://127.0.0.1:8000/api/buy/'+{{ item.id }})
+<!--console.log(result)-->
+const sessionId = await result.json()
+<!--console.log(sessionId)-->
+if (typeof sessionId === "string"){
+    stripe.redirectToCheckout({ sessionId })
+}
+
+}
+</script>
+</body>
+</html>
+
+
